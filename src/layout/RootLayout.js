@@ -1,15 +1,17 @@
-import Footer from '@/components/Footer'
-import Navbar from '@/components/Header'
-import React from 'react'
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Header";
+import React from "react";
 
-function RootLayout({children}) {
+function RootLayout({ children }) {
   return (
-    <div>
-        <Navbar/>
-        {children}
-        <Footer/>
-    </div>
-  )
+    <section>
+      <section>
+        <Navbar />
+      </section>
+      <section>{children}</section>
+      <Footer />
+    </section>
+  );
 }
 
-export default RootLayout
+export default RootLayout;
