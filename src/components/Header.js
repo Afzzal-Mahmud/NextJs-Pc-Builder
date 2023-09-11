@@ -3,9 +3,11 @@ import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { useState } from "react";
 import LogoImage from "@/assets/logo.png";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 function NavBar() {
   const [navbar, setNavbar] = useState(false);
+  const router = useRouter()
   return (
     <div>
       <nav className="w-full bg-black fixed top-0 left-0 right-0 z-10">
@@ -61,7 +63,7 @@ function NavBar() {
                 
 
                 <li className="pb-6 text-xl text-white py-2 text-center  border-b-2 md:border-b-0">
-                  <button className="inline-block px-6 pb-2 pt-2.5 shadow-[0_4px_9px_-4px_#3b71ca]">
+                  <button onClick={() => router.push('/buildpc')} className="inline-block px-6 pb-2 pt-2.5 shadow-[0_4px_9px_-4px_#3b71ca]">
                     Build Pc
                   </button>
                 </li>
