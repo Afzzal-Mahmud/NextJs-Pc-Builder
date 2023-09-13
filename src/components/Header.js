@@ -3,10 +3,12 @@ import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { useState } from "react";
 import LogoImage from "@/assets/logo.png";
 import Image from "next/image";
+import { useSession, signOut } from "next-auth/react"
 import { useRouter } from "next/router";
 
 function NavBar() {
   const [navbar, setNavbar] = useState(false);
+  const {data:session} = useSession()
   const router = useRouter()
   return (
     <div>
@@ -54,11 +56,17 @@ function NavBar() {
                   </Link>
                 </li>
 
-                <li className="pb-6 text-xl text-white py-2 px-6 text-center  border-b-2 md:border-b-0  hover:bg-purple-600  border-purple-900  md:hover:text-purple-600 md:hover:bg-transparent">
+                {session?.user ? 
+                  <li className="pb-6 text-xl text-white py-2 px-6 mr-1 text-center  border-b-2 md:border-b-0  hover:bg-purple-600  border-purple-900  md:hover:text-purple-600 md:hover:bg-transparent">
+                  <p onClick={() => signOut()}>
+                    Log Out
+                  </p>
+                </li>
+                 : <li className="pb-6 text-xl text-white py-2 px-6 text-center  border-b-2 md:border-b-0  hover:bg-purple-600  border-purple-900  md:hover:text-purple-600 md:hover:bg-transparent">
                   <Link href="/login" onClick={() => setNavbar(!navbar)}>
                     Login/Register
                   </Link>
-                </li>
+                </li>}
 
                 
 
