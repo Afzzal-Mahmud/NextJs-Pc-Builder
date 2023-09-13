@@ -1,9 +1,32 @@
+import { setAddPcComponents } from "@/Redux/buildPcSlice";
+import Swal from "sweetalert2";
 import React, { useState } from "react";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
 
 function StorageDeviceCard({ singleProduct }) {
   const [review, setReview] = useState(false);
   const [otherFeature, setOtherFeature] = useState(false);
+
+  const {components} = useSelector((state) => state?.pcComponents)
+  const dispatch = useDispatch()
+  const router = useRouter()
+  
+  const handleAddComponents = async(singleComponent) => {
+    const existingComponents = await components?.find((existingElement) => existingElement?.ProductType === singleComponent?.ProductType)
+    if(existingComponents){
+      await Swal.fire({
+         icon: 'error',
+         title: 'Oh Dear',
+         text: 'You have already added Storage Device to your build',
+       })
+       await router.push('/buildpc')
+     }else{
+       await dispatch(setAddPcComponents(singleComponent))
+       await router.push('/buildpc')
+     }
+  }
   return (
     <div className="md:flex items-start justify-center py-12 2xl:px-20 md:px-6 px-4 mt-[6rem]">
       <div className="xl:w-2/6 lg:w-2/5 sm:w-80">
@@ -17,7 +40,7 @@ function StorageDeviceCard({ singleProduct }) {
             {singleProduct.Details}
           </p>
         </div>
-        <button className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 text-base flex items-center justify-center text-white w-full py-4 mt-4">
+        <button onClick={()=> handleAddComponents(singleProduct)} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 text-base flex items-center justify-center text-white w-full py-4 mt-4">
           Add To Build
         </button>
       </div>

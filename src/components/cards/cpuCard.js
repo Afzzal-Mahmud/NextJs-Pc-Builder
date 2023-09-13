@@ -1,15 +1,32 @@
-import MonitorCard from "@/components/cards/monitorCard";
-import MotherBoardsCard from "@/components/cards/motherBoardCard";
-import PowerSupplyCard from "@/components/cards/powerSupplyCard";
-import RamCard from "@/components/cards/ramCard";
-import StorageDeviceCard from "@/components/cards/storageDeviceCard";
-import NoFooterLayout from "@/layout/NoFooterLayout";
+import { setAddPcComponents } from "@/Redux/buildPcSlice";
+import Swal from "sweetalert2";
 import React, { useState } from "react";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
 
 function CpuCard({ singleProduct }) {
   /* review for Cpu */
   const [review, setReview] = useState(false);
+  const {components} = useSelector((state) => state?.pcComponents)
+  const dispatch = useDispatch()
+  const router = useRouter()
+  
+  const handleAddComponents = async(singleComponent) => {
+    const existingComponents = await components?.find((existingElement) => existingElement?.ProductType === singleComponent?.ProductType)
+    if(existingComponents){
+     await Swal.fire({
+        icon: 'error',
+        title: 'Oh Dear',
+        text: 'You have already added Cpu to your build',
+      })
+      await router.push('/buildpc')
+    }else{
+      await dispatch(setAddPcComponents(singleComponent))
+      await router.push('/buildpc')
+    }
+  }
+
   return (
     /* This default return statement is for Cpu and other components are in 
     src/components/cards folder */
@@ -20,7 +37,7 @@ function CpuCard({ singleProduct }) {
           alt="image of a pc component"
           src={singleProduct.Image}
         />
-        <button className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 text-base flex items-center justify-center text-white w-full py-4 mt-4">
+        <button onClick={()=> handleAddComponents(singleProduct)} className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 text-base flex items-center justify-center text-white w-full py-4 mt-4">
           Add To Build
         </button>
       </div>
